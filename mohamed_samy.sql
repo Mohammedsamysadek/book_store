@@ -1,0 +1,221 @@
+﻿create database book_store;
+
+CREATE TABLE `LMS_MEMBERS` (
+  `MEMBER_ID` INT,
+  `MEMBER_NAME` VARCHAR(20),
+  `CITY` VARCHAR(30),
+  `DATE_REGISTER` DATE,
+  `DATE_EXPIRE` DATE,
+  `MEMBERSHIP_STATUS` VARCHAR(15),
+  KEY `primary key` (`MEMBER_ID`),
+  KEY `Key` (`MEMBER_NAME`, `CITY`, `DATE_REGISTER`, `DATE_EXPIRE`, `MEMBERSHIP_STATUS`)
+);
+
+CREATE TABLE `LMS_SUPPLIERS_DETAILS` (
+  `SUPPLIER_ID` VARCHAR(30),
+  `SUPPIER_NAME` VARCHAR(30),
+  `ADDRESS` VARCHAR(50),
+  `CONTACT` INT,
+  `EMAIL` VARCHAR(30),
+  KEY `PRIMARY KEY` (`SUPPLIER_ID`),
+  KEY `Key` (`SUPPIER_NAME`, `ADDRESS`, `CONTACT`, `EMAIL`)
+);
+
+CREATE TABLE `LMS_BOOK_ISSUE` (
+  `BOOK_ISSUE_NO` INT,
+  `MEMBER_ID` INT,
+  `BOOK_CODE` VARCHAR(10),
+  `DATE_ISSUE` DATE,
+  `DATE_RETURN` DATE,
+  `DATE_RETURNED` DATE,
+  `BOOK_ISSUE_STATUS` VARCHAR(20),
+  `RANGE` VARCHAR(3),
+  KEY `PRIMARY KEY` (`BOOK_ISSUE_NO`),
+  KEY `Key` (`MEMBER_ID`, `BOOK_CODE`, `DATE_ISSUE`, `DATE_RETURN`, `DATE_RETURNED`, `BOOK_ISSUE_STATUS`, `RANGE`)
+);
+
+CREATE TABLE `LMS_BOOK_DETAILS` (
+  `BOOK_CODE` VARCHAR(10),
+  `BOOK_TITLE` VARCHAR(50),
+  `CATEGOTY` VARCHAR(15),
+  `AUTHOR` VARCHAR(30),
+  `PUBLICATION` VARCHAR(50),
+  `PUBLISH_DATE` DATE,
+  `BOOK_EDITION` INT,
+  `PRICE` INT,
+  `RACK_NUM` VARCHAR(50),
+  `DATE_ARRIVAL` DATE,
+  `SUPPLIER_ID` VARCHAR(20),
+  KEY `PRIMARY KEY` (`BOOK_CODE`),
+  KEY `Key` (`BOOK_TITLE`, `CATEGOTY`, `AUTHOR`, `PUBLICATION`, `PUBLISH_DATE`, `BOOK_EDITION`, `PRICE`, `RACK_NUM`, `DATE_ARRIVAL`, `SUPPLIER_ID`)
+);
+
+CREATE TABLE `LMS_FINE_DETAILS` (
+  `FINE_RANGE` VARCHAR(3),
+  `FINE_AMOUNT` INT,
+  KEY `Key` (`FINE_RANGE`, `FINE_AMOUNT`)
+);
+insert into LMS_MEMBERS VALUES(001, 'AMIT', 'CHENAL', '2012-02-12','2013-02-11','TEMPORARY');
+insert into LMS_SUPPLIERS_DETAILS VALUES('S01', 'AMIT', 'CHENAL', 0125556464,'SING@GMAIL.COM');
+insert into LMS_FINE_DETAILS VALUES('R6',200);
+insert into LMS_BOOK_DETAILS VALUES('001', 'AMIT', 'CHENAL', 'REACHARD','FATE BILLORY','2011-10-10',5,750);
+
+/*SELECT*/
+select	member_id, member_name, city, membership_status
+from		LMS_MEMBERS
+where 	membership_status='permanent';
+
+select	b1. member_id, b1. member_name, b2. book_code
+from		LMS_MEMBERS b1, LMS_BOOK_ISSUE b2
+where	 b2. BOOK_CODE='BL000002';
+
+select 	book_code, book_title, author 
+from		LMS_BOOK_DETAILS
+where 	AUTHOR like 'P%';
+
+select	 member_id, member_name, DATE_REGISTER, DATE_EXPIRE 
+from 	LMS_MEMBERS
+where 	DATE_EXPIRE < '2013-04-01';
+
+Select 	BOOK_CODE, BOOK_TITLE, RACK_NUM 
+from		 LMS_BOOK_DETAILS
+where 	RACK_NUM='A1' ORDER BY BOOK_TITLE ASC;
+
+select 	BOOK_TITLE, SUPPLIER_ID 
+from		LMS_BOOK_DETAILS
+where 	AUTHOR='Herbert Schildt' and BOOK_EDITION='5' and SUPPLIER_ID='S01';
+
+select 	BOOK_CODE, BOOK_TITLE, PUBLISH_DATE 
+from		LMS_BOOK_DETAILS
+where 	MONTH(PUBLISH_DATE) ='12';
+
+Select	BOOK_CODE, BOOK_TITLE, PUBLICATION, YEAR(GETDATE())-YEAR(DATE_ARRIVAL) as YEARS
+from		LMS_BOOK_DETAILS
+order by 	YEARS desc;
+
+select 	b1.book _code, b2. book_title
+from		LMS_BOOK_ISSUE b1, LMS_BOOK_DETAILS b2
+where 	b1.DATE_ISSUE='2012-04-01 ' AND b1. BOOK_CODE=b2.BOOK_CODE;
+
+select	member_id, member_name, DATE_REGISTER, MEMBERSHIP_STATUS 
+from		LMS_MEMBERS
+where	DATE_REGISTER < '2012-03-01' and MEMBERSHIP_STATUS='Temporary';
+
+select 	member_id, member_name as 'Name' 
+from		LMS_MEMBERS
+where 	CITY='Chennai' or CITY='Delhi';
+
+select 	supplier_id, SUPPLIER_NAME, EMAIL 
+from		LMS_SUPPLIERS_DETAILS
+where 	EMAIL like '%gmail.com';
+
+select	T1. MEMBER _ID, MEMBER_NAME, DATE_REGISTER 
+from		LMS_MEMBERS T1, LMS_BOOK_ISSUE T2
+where	T2.MEMBER_ID IS NULL	AND T1. MEMBER_ID = T2. MEMBER_ID;
+
+select	BOOK_TITLE, SUPPLIER_ID 
+from		LMS_BOOK_DETAILS
+where 	AUTHOR='henery' and BOOK_EDITION='6' and SUPPLIER_ID='S03';
+
+select 	BOOK_CODE, BOOK_TITLE, PUBLISH_DATE 
+from		LMS_BOOK_DETAILS
+where 	MONTH (PUBLISH_DATE) ='11';
+
+select	 BOOK_CODE, BOOK_TITLE, RACK_NUM 
+from		 LMS_BOOK_DETAILS
+where	 RACK_NUM='A3' ORDER BY BOOK_TITLE ASC;
+
+select	b1. member_id, b1. member_name, b2. book_code 
+from		LMS_MEMBERS b1, LMS_BOOK_ISSUE b2
+where 	b2.BOOK_CODE='BL000005';
+
+select	member_id, member_name, DATE_REGISTER, MEMBERSHIP_STATUS 
+from		LMS_MEMBERS
+where	DATE_REGISTER < '2012-03-01' and MEMBERSHIP_STATUS='permanent';
+
+select 	member_id, member_name as 'Name' 
+from		LMS_MEMBERS
+where 	CITY='France' or CITY='Delhi';
+
+select 	b1.book _code, b2. book_title
+from		LMS_BOOK_ISSUE b1, LMS_BOOK_DETAILS b2
+where	b1.DATE_ISSUE='2014-11-01 ' AND b1. BOOK_CODE=b2.BOOK_CODE;
+
+
+/*SUB QUERY*/
+
+Select	 MEMBER_ID,
+(select	MEMBER_NAME 
+From	 LMS_MEMBERS 
+where 	MEMBER_ID=t1. MEMBER_ID) as MEMBER_NAME, BOOK_CODE,
+(select BOOK_TITLE
+from LMS_BOOK_DETAILS 
+         where BOOK_CODE=t1.BOOK_CODE) as BOOK_TITLE from LMS_BOOK_ISSUE t1;
+
+SELECT MEMBER_ID,
+(SELECT	 MEMBER_NAME 
+FROM 	LMS_MEMBERS 
+WHERE 	MEMBER_ID=T1.MEMBER_ID) AS MEMBER_NAME, DATE_RETURN AS DUE_DATE, DATE_RETURNED 
+FROM		 LMS_BOOK_ISSUE T1 
+WHERE 	DATE_RETURN < DATE_RETURNED;
+
+Select	t1.MEMBER_ID,
+(select t2. MEMBER_NAME 
+from 	LMS_MEMBERS t2 
+where t1. MEMBER_ID=t2.MEMBER_ID) as MEMBER_NAME 
+from	 LMS_BOOK_ISSUE t1
+where t1. DATE_RETURN >=t1.DATE_RETURNED and year (t1. DATE_RETURNED) =2012;
+
+
+/*COUNT AND GROUP FUNCTIONS*/
+select	category, COUNT (category) as NO_OF_BOOKS
+from 	LMS_BOOK_DETAILS
+group by    CATEGORY;
+
+select 	COUNT (publication) as NO_OF_BOOKS 
+from	 LMS_BOOK_DETAILS
+where 	PUBLICATION='Prentice Hall';
+
+/*JOIN STATEMENTS*/
+Select	b1.book_code, b2. book_title 
+from 	LMS_BOOK_ISSUE b1 inner join LMS_BOOK_DETAILS b2
+on	b1.BOOK_CODE=b2.BOOK_CODE 
+where	b1.DATE_ISSUE='2012-04-01';
+
+SELECT	COUNT (t1. BOOK_CODE) AS NO_OF_BOOKS_AVAILABLE 
+FROM	 	LMS_BOOK_DETAILS t1 LEFT JOIN LMS_BOOK_ISSUE t2
+ON		t1.BOOK_CODE = t2. BOOK_CODE 
+WHERE	t2.BOOK_CODE IS NULL;
+
+SELECT	T1.MEMBER_ID, MEMBER_NAME, DATE_REGISTER 
+FROM	 	LMS_MEMBERS T1 LEFT JOIN LMS_BOOK_ISSUE T2
+ON		T1.MEMBER_ID = T2. MEMBER_ID 
+WHERE	T2.MEMBER_ID IS NULL;
+
+Select	 t1. MEMBER_ID, t2. MEMBER_NAME
+from	LMS_BOOK_ISSUE t1
+join	LMS_MEMBERS t2
+on	t1.MEMBER_ID=t2.MEMBER_ID
+where 	t1. DATE_RETURN>=t1.DATE_RETURNED and YEAR (t1. DATE_RETURNED) =2012;
+
+Select	b1.book_code, b2. book_title
+from 	LMS_BOOK_ISSUE b1 inner join LMS_BOOK_DETAILS b2
+on	b1.BOOK_CODE=b2.BOOK_CODE 
+where	b1.DATE_ISSUE='2013-11-01';
+
+/*UPDATE*/
+
+Update LMS_MEMBERS set member_name= 'smith'where member_id='LM001';
+Update LMS_SUPPLIERS set   City= 'France' where Supplier_id = 'S01';
+Update LMS_FINE_DETAILS set fine_range='R5' where fine_average=200;
+Update LMS_MEMBERS set member_name= 'bibble' where member_id='LM011';
+Update LMS_SUPPLIERS set   City= 'EGYPT' where	Supplier_id ='S06';
+
+/*DELETE*/
+
+Delete from LMS_MEMBERS where member_name=' smith';
+Delete from LMS_SUPPLIERS Where city= 'France';
+Delete from LMS_FINE where fine_Range=R6;
+Delete from LMS_SUPPLIERS Where supplier_name='bibble';
+Delete from LMS_MEMBERS where member_id='LM001';
+
